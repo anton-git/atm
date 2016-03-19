@@ -3,20 +3,35 @@
 </div>
 
 
-<form ng-controller="ViewEnterScreenController">
+<form name="loginForm" ng-controller="ViewEnterScreenController">
 
   <div class="form-group">
     <label for="cardNumber">Card Number</label>
     <input type="text" class="form-control" id="cardNumber" placeholder="Card Number"
-    ng-model="cardNumber">
+            name="cardNumber" ng-model="cardNumber" 
+            required ng-pattern="/^\d{4}-\d{4}$/">
+
+    <!-- <pre>{{loginForm.cardNumber | json}}</pre> -->
+    <div ng-messages="loginForm.cardNumber.$error" ng-hide="loginForm.$pristine"
+          class="text-danger">
+      <div ng-message="required">Please enter card number</div>
+      <div ng-message="pattern">Use format: XXXX-XXXX</div>
+    </div>
   </div>
 
   <div class="form-group">
-    <label for="pinCode">Card Number</label>
+    <label for="pinCode">PIN code</label>
     <input type="password" class="form-control" id="pinCode" placeholder="Pin Code"
     ng-model="pinCode">
   </div>
 
-  <button type="submit" class="btn btn-default" ng-click="enter(cardNumber, pinCode)">Enter</button>
+  <button type="submit" class="btn btn-default" ng-click="enter(cardNumber, pinCode)"
+  ng-disabled="loginForm.$pristine || loginForm.$invalid">
+  Enter
+  </button>
+
+  <div class="alert alert-danger" role="alert" ng-show="loginFailed">
+    Login failed, try again.
+  </div>
 
 </form>

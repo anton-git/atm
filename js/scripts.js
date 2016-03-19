@@ -1,4 +1,4 @@
-var app = angular.module('atm-app', ['ngRoute']);
+var app = angular.module('atm-app', ['ngRoute', 'ngMessages']);
 
 app
 
@@ -32,13 +32,17 @@ app
 
     $scope.cardNumber;
     $scope.pinCode;
+    $scope.loginFailed = false;
 
     $scope.enter = function(cardNumber, pinCode) {
+
+        $scope.loginFailed = false;
 
         if (Account.validate(cardNumber, pinCode)) {
             $location.path("/main");
         } else {
-            alert('Validation Failed!');
+            $scope.loginFailed = true;
+            // alert('Validation Failed!');
         }
 
     };
@@ -61,6 +65,10 @@ app
 
 
 }])
+
+.directive('pincode', function() {
+    
+})
 
 .filter('checkmark', function() {
   return function(input) {
